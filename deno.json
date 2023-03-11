@@ -1,0 +1,6 @@
+{
+  "tasks": {
+    "oak": "deno run --allow-net --allow-read --allow-write --watch ./api/oak_server.ts",
+    "express": "deno run --allow-env --allow-net --allow-read --allow-write --watch ./api/express_server.ts"
+  } 
+}
