@@ -1,21 +1,16 @@
 // @deno-types="npm:@types/express@4"
 import express, 
   { NextFunction, Request, Response } from 'npm:express@4.18.2';
-
-
-type Person = {
-  id: number,
-  slug: string,
-  name: string,
-  homeWorld: string
-}
+import cors from 'npm:cors@2.8.5';
+import { Dinosaur } from '../types/Dinosaur.ts';
 
 const app = express();
-const port: number = Number(Deno.env.get("APP_PORT")) || 8080;
+app.use(cors());
+const port: number = Number(Deno.env.get("APP_PORT")) || 8000;
 
 const data = await Deno.readFile('./data/data.json');
 const decoder = new TextDecoder('utf-8');
-const people = JSON.parse(decoder.decode(data)) as Person[];
+const dinosaurs = JSON.parse(decoder.decode(data)) as Dinosaur[];
 
 const reqLogger = 
   function(req: Request, _res:Response, next: NextFunction) {
@@ -31,22 +26,23 @@ app.get("/", (_req: Request, res: Response): void => {
   res.send("Hello from Deno & Express");
 });
 
-app.get("/users", (_req: Request, res: Response): void => {
-  res.send(people);
+app.get("/dinosaur", (_req: Request, res: Response): void => {
+  res.send(dinosaurs);
 });
 
-app.get("/users/:id", (req: Request, res: Response): void => {
-  const id = Number(req.params.id);
-  const person = people.find((person) => person.id === id);
+app.get("/dinosaur/:name", (req: Request, res: Response): void => {
+  const name = String(req.params.name);
+  const dinosaur = dinosaurs.find(
+    (dinosaur) => dinosaur.name.toLowerCase() === name.toLowerCase()
+  );
 
-  if(!person) {
+  if(!dinosaur) {
     res.sendStatus(400);
     return;
   }
 
-  res.status(200).send(person);
+  res.status(200).send(dinosaur);
 });
-
 
 app.listen(port, () => {
   console.log(`Listening on http://localhost:${ port } ...`);

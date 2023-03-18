@@ -1,15 +1,7 @@
 import { Application, Router } from "https://deno.land/x/oak@v12.0.1/mod.ts";
 import { oakCors } from "https://deno.land/x/cors@v1.2.2/mod.ts";
+import { Dinosaur } from "../types/Dinosaur.ts"
 
-type Dinosaur = {
-  id: number,
-  name: string,
-  diet: string,
-  lenght: string,
-  period: string,
-  mya: string,
-  info: string,
-}
 
 const app = new Application();
 const router = new Router();
